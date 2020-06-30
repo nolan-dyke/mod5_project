@@ -54,6 +54,8 @@ table {
   box-sizing: border-box;
 }
 
+/* My styling */
+
 .app {
   font-family: 'Nunito', sans-serif;
   display: flex;
@@ -90,6 +92,19 @@ table {
   /* background-color: rgba(36, 174, 36, 0.824); */
 }
 
+.flashcard-correct {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 2px grey;
+  border-radius: 2rem;
+  padding: 3%;
+  margin: 0.5%;
+  width: 30%;
+  background-color: green;
+  /* background-color: rgba(36, 174, 36, 0.824); */
+}
+
 #character {
   font-size: 40px; 
   margin: 5%;
@@ -101,7 +116,7 @@ table {
 }
 
 .hero {
-  height: 100vh;
+  height: 75vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

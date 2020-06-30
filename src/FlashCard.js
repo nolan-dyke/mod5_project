@@ -1,31 +1,98 @@
 import React, { Component } from 'react'
+import SpeechRecognition from 'react-speech-recognition'
+import PropTypes from "prop-types"
+const propTypes = {
+    // Props injected by SpeechRecognition
+    transcript: PropTypes.string,
+    resetTranscript: PropTypes.func,
+    browserSupportsSpeechRecognition: PropTypes.bool,
+    startListening: PropTypes.func,
+    recognition: PropTypes.object
+  }
 
-export default class FlashCard extends Component {
+const options = {
+    autoStart: false,
+    continuous: false
+  }
+
+class FlashCard extends Component {
     state = {
         words: this.props.words,
-        word: {}
+        word: {},
+        result: '',
+        correct: false,
+        pinyin: ''
     }
 
     setWord = () => {
         let newWord = this.props.getRandomWord(this.state.words)
         this.setState({word: newWord})
+        this.setState({correct: false})
+        this.setState({pinyin: ''})
+        this.setState({result: ''})
     }
 
     componentDidMount() {
         this.setWord()
+        this.props.recognition.lang = 'zh-CN'
+    }
+
+    record = () => {
+        let recognition = this.props.recognition
+        recognition.start()
+        recognition.onresult = (event) => {
+            // console.log(event.results[0][0].transcript)
+            let voiceLength = event.results[0][0].transcript.split("")
+            if (voiceLength.length > 1) {
+                this.setState({result: voiceLength[0]})
+                console.log(voiceLength)
+                this.check(this.state.result)
+            } else {
+                this.setState({result: event.results[0][0].transcript})
+                this.check(this.state.result)
+            }
+        }
+    }
+
+    check = (c) => {
+        let match = this.state.words.find(word => word.simplified == c)
+        if (match) {
+            this.setState({pinyin: match.pinyin})
+            let pinyinArray = match.pinyin.split("")
+            let originalArray = this.state.word.pinyin.split("")
+            let originalTone = originalArray[originalArray.length - 1]
+            let tone = pinyinArray[pinyinArray.length - 1]
+            console.log(tone)
+            if (tone === originalTone){
+                console.log('correct')
+                this.correct()
+            } else {
+                console.log('false')
+            }
+        }
+    }
+
+    correct = () => {
+        this.setState({correct: true})
     }
     
     render() {
         return (
-            <section className='flashcard' onClick={() => this.setWord()}>
+            <section className={this.state.correct ? 'flashcard-correct' : 'flashcard'}>
                 <p id='character'>{this.state.word.simplified}</p>
                 <p>{this.state.word.pinyin}</p>
                 <p>{this.state.word.definitions}</p>
+                <button onClick={() => this.record()} >record</button>
+                <p>{this.state.result}</p>
+                <p>{this.state.pinyin}</p>
+                <button onClick={() => this.setWord()}>new</button>
             </section>
         )
     }
 }
 
+FlashCard.propTypes = propTypes
 
+export default SpeechRecognition(options)(FlashCard)
 
 
