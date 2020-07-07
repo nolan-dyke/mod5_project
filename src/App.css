@@ -89,6 +89,7 @@ table {
   margin: 0.5%;
   width: 30%;
   background-color: rgba(243, 142, 47, 0.851);
+  min-height: 100%;
   /* background-color: rgba(36, 174, 36, 0.824); */
 }
 

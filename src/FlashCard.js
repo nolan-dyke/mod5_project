@@ -21,7 +21,8 @@ class FlashCard extends Component {
         word: {},
         result: '',
         correct: false,
-        pinyin: ''
+        pinyin: '',
+        buttonDisabled: false
     }
 
     setWord = () => {
@@ -39,6 +40,7 @@ class FlashCard extends Component {
 
     record = () => {
         let recognition = this.props.recognition
+        this.setState({buttonDisabled: true})
         recognition.start()
         recognition.onresult = (event) => {
             // console.log(event.results[0][0].transcript)
@@ -51,6 +53,11 @@ class FlashCard extends Component {
                 this.setState({result: event.results[0][0].transcript})
                 this.check(this.state.result)
             }
+        }
+        recognition.onspeechend = () => {
+            recognition.stop()
+            console.log('stopping')
+            this.setState({buttonDisabled: false})
         }
     }
 
@@ -74,7 +81,15 @@ class FlashCard extends Component {
 
     correct = () => {
         this.setState({correct: true})
+        this.props.recognition.stop()
     }
+
+    // performFetch = () => {
+    //     fetch('http://localhost:3000/api/users/1')
+    //     .then(resp => resp.json())
+    //     .then(console.log)
+    //     .then(console.log('definition array', this.state.word.definitions))
+    // }
     
     render() {
         return (
@@ -82,7 +97,7 @@ class FlashCard extends Component {
                 <p id='character'>{this.state.word.simplified}</p>
                 <p>{this.state.word.pinyin}</p>
                 <p>{this.state.word.definitions}</p>
-                <button onClick={() => this.record()} >record</button>
+                <button onClick={() => this.record()} disabled={this.state.buttonDisabled}>record</button>
                 <p>{this.state.result}</p>
                 <p>{this.state.pinyin}</p>
                 <button onClick={() => this.setWord()}>new</button>
