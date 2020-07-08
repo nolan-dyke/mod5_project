@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import SpeechRecognition from 'react-speech-recognition'
 import PropTypes from "prop-types"
+import RecordIcon from './images/Record-icon.png'
 const propTypes = {
     // Props injected by SpeechRecognition
     transcript: PropTypes.string,
@@ -93,14 +94,16 @@ class FlashCard extends Component {
         return (
             <section className={this.state.correct ? 'flashcard-correct' : 'flashcard'}>
                 <p id='character'>{this.state.word.simplified}</p>
-                <p>{this.state.word.pinyin}</p>
-                <p>{this.state.word.definitions}</p>
-                <button onClick={() => this.record()} disabled={this.state.buttonDisabled}>record</button>
+                <h2>{this.state.word.pinyin}</h2>
+                <p id='definition'>{this.state.word.definitions}</p>
+                <button id='record-button' onClick={() => this.record()} disabled={this.state.buttonDisabled}><img id='record' src={RecordIcon}/></button>
                 <p>{this.state.result}</p>
                 <p>{this.state.pinyin}</p>
-                <button onClick={() => this.setWord()}>new</button>
-                {this.props.addFlashcard ? <button onClick={() => this.props.addFlashcard(this.state.word)} >save</button> : null}
-                {this.props.removeFlashcard ? <button onClick={() => this.props.removeFlashcard(this.state.word)} >Remove</button> : null}
+                <div className='button-box'>
+                    <button onClick={() => this.setWord()}>new</button>
+                    {this.props.addFlashcard ? <button onClick={() => this.props.addFlashcard(this.state.word)} >save</button> : null}
+                    {this.props.removeFlashcard ? <button onClick={() => this.props.removeFlashcard(this.state.word)} >Remove</button> : null}
+                </div>
             </section>
         )
     }

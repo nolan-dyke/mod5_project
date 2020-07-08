@@ -118,11 +118,10 @@ table {
   align-items: center;
   justify-content: space-evenly;
   box-shadow: 0 2px 2px grey;
-  border-radius: 2rem;
   padding: 3%;
   margin: 0.5%;
-  width: 100%;
-  height: 300px;
+  width: 90%;
+  height: 200px;
   background-color: rgba(243, 142, 47, 0.851);
 }
    
@@ -146,13 +145,11 @@ table {
   background-position: center;
   background-size: cover;
   color: rgba(255, 255, 255);
-  border-radius: 0.5rem;
 }
 
 .explain {
   display: flex;
   justify-content: space-between;
-  margin: 5%;
 }
 
 form {
@@ -185,6 +182,10 @@ form h2 {
   margin: 5px;
 }
 
+h2 {
+  font-size: 20px;
+}
+
 .login-section {
   display: flex;
   align-items: center;
@@ -195,6 +196,45 @@ form h2 {
 
 button {
   border-radius:15px;
-  border:1px solid #d6bcd6;
+  padding: 10px;
+  border-style: none;
+  background-color: rgb(240, 225, 215);
 	display:inline-block;
+}
+
+.tone-image {
+  width: 100px;
+  height: 100px;
+}
+
+nav {
+  height: 45px;
+  background-color: rgba(243, 142, 47, 0.75);
+  display: flex;
+  padding: 5px;
+}
+
+nav button {
+  margin: 2px;
+}
+
+.button-box {
+  display: flex;
+  width: 50%;
+  justify-content: space-evenly;
+}
+
+#definition {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#record {
+  height: 35px;
+  width: 35px;
+}
+
+#record-button {
+  padding: 4px;
 }
