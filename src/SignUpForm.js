@@ -15,6 +15,7 @@ export default class SignUpForm extends Component {
         return (
             <div>
                 <form className='signup-form' onSubmit={(event) => this.props.handleSignup(event, this.state)} >
+                    <h2>Sign Up</h2>
                     <label>Username</label>
                     <input 
                     type='text' 

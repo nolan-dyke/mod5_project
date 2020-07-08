@@ -15,6 +15,7 @@ export default class LoginForm extends Component {
         return (
             <div>
                 <form className='login-form' onSubmit={(event) => this.props.handleLogin(event, this.state)} >
+                    <h2>Login</h2>
                     <label>Username</label>
                     <input 
                     type='text' 

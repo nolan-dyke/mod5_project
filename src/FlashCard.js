@@ -17,6 +17,7 @@ const options = {
 
 class FlashCard extends Component {
     state = {
+        allData: this.props.allData,
         words: this.props.words,
         word: {},
         result: '',
@@ -25,8 +26,13 @@ class FlashCard extends Component {
         buttonDisabled: false
     }
 
+    getRandomWord = (data) => {
+        let randomNumber = Math.floor(Math.random() * data.length)
+        return data[randomNumber]
+      }
+
     setWord = () => {
-        let newWord = this.props.getRandomWord(this.state.words)
+        let newWord = this.getRandomWord(this.state.words)
         this.setState({word: newWord})
         this.setState({correct: false})
         this.setState({pinyin: ''})
@@ -43,7 +49,6 @@ class FlashCard extends Component {
         this.setState({buttonDisabled: true})
         recognition.start()
         recognition.onresult = (event) => {
-            // console.log(event.results[0][0].transcript)
             let voiceLength = event.results[0][0].transcript.split("")
             if (voiceLength.length > 1) {
                 this.setState({result: voiceLength[0]})
@@ -62,7 +67,7 @@ class FlashCard extends Component {
     }
 
     check = (c) => {
-        let match = this.state.words.find(word => word.simplified == c)
+        let match = this.state.allData.find(word => word.simplified == c)
         if (match) {
             this.setState({pinyin: match.pinyin})
             let pinyinArray = match.pinyin.split("")
@@ -84,13 +89,6 @@ class FlashCard extends Component {
         this.props.recognition.stop()
     }
 
-    // performFetch = () => {
-    //     fetch('http://localhost:3000/api/users/1')
-    //     .then(resp => resp.json())
-    //     .then(console.log)
-    //     .then(console.log('definition array', this.state.word.definitions))
-    // }
-    
     render() {
         return (
             <section className={this.state.correct ? 'flashcard-correct' : 'flashcard'}>
@@ -101,6 +99,8 @@ class FlashCard extends Component {
                 <p>{this.state.result}</p>
                 <p>{this.state.pinyin}</p>
                 <button onClick={() => this.setWord()}>new</button>
+                {this.props.addFlashcard ? <button onClick={() => this.props.addFlashcard(this.state.word)} >save</button> : null}
+                {this.props.removeFlashcard ? <button onClick={() => this.props.removeFlashcard(this.state.word)} >Remove</button> : null}
             </section>
         )
     }

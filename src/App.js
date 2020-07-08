@@ -1,38 +1,28 @@
 import React, { Component } from 'react'
+import Navbar from './Navbar'
 import Hero from './Hero'
-import FlashCard from './FlashCard'
-import Explanation from './Explanation'
-import LoginForm from './LoginForm'
-import SignUpForm from './SignUpForm'
-import data from './cedict_1.json'
+import ProtectedRoute from './ProtectedRoute'
+import Saves from './Saves'
+import LoginPage from './LoginPage'
+// import data from './cedict_1.json'
+import data from './HSK1.json'
 import './App.css'
+import { Route, withRouter } from 'react-router-dom'
 
 
-export default class App extends Component {
+class App extends Component {
   state = {
     words: data,
+    userFlashcards: [],
+    userId: 0,
+    viewFlashcards: false,
     loggedIn: localStorage.getItem('token') ? true : false,
-    userFlashcards: []
   }
 
-  componentDidMount() {
-    if(this.state.loggedIn) {
-      fetch('http://localhost:3000/api/current_user', {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`
-        }
-      })
-      .then(resp => resp.json())
-      .then(response => {
-        this.setState({userFlashcards: response.flashcards})
-      })
-    }
-  }
-
-  getRandomWord = (data) => {
-    let randomNumber = Math.floor(Math.random() * data.length)
-    return data[randomNumber]
-  }
+  // getRandomWord = (data) => {
+  //   let randomNumber = Math.floor(Math.random() * data.length)
+  //   return data[randomNumber]
+  // }
 
   handleLogin = (event, data) => {
     event.preventDefault() 
@@ -46,11 +36,13 @@ export default class App extends Component {
     .then(resp => resp.json())
     .then(response => {
       localStorage.setItem('token', response.token)
+      console.log(response)
       this.setState({
-        loggedIn: true,
-        userFlashcards: response.user.flashcards
+        loggedIn: true, 
+        userId: response.user.id
       })
     })
+    .then(() => this.props.history.push('/'))
   }
 
   handleSignup = (event, data) => {
@@ -67,26 +59,56 @@ export default class App extends Component {
       localStorage.setItem('token', response.token)
       this.setState({loggedIn: true,})
     })
+    .then(() => this.props.history.push('/'))
   }
 
-  handle_logout = () => {
+  handleLogout = () => {
     localStorage.removeItem('token')
     this.setState({loggedIn: false, userFlashcards: []})
+  }
+
+  addFlashcard = (fc) => {
+    if(!this.state.userFlashcards.find(card => card === fc)){
+      let cards = [...this.state.userFlashcards, fc]
+      this.setState({userFlashcards: cards})
+    }
+  }
+
+  removeFlashcard = (fc) => {
+    let newSaves = this.state.userFlashcards.filter(card => card !== fc)
+    this.setState({userFlashcards: newSaves})
+    console.log('current state', this.state.userFlashcards)
+    console.log('new saves', newSaves)
+  }
+
+  viewSaves = () => {
+    if (this.state.viewFlashcards) {
+      this.props.history.push('/')
+      this.setState({viewFlashcards: !this.state.viewFlashcards})
+    } else {
+      this.props.history.push('/my-flashcards')
+      this.setState({viewFlashcards: !this.state.viewFlashcards})
+    }
   }
 
   render() {
     return (
       <div className='app'>
+          {this.state.loggedIn ? <Navbar viewFlashcards={this.state.viewFlashcards} handleLogout={this.handleLogout} viewSaves={this.viewSaves} /> : null}
           <Hero />
-          <LoginForm handleLogin={this.handleLogin} />
-          <SignUpForm handleSignup={this.handleSignup} />
-          <section className='main-content'>
-            <Explanation />
-            <section className='flash-section'>
-              <FlashCard words={this.state.words} getRandomWord={this.getRandomWord} />    
-            </section>
-          </section>
+          <ProtectedRoute 
+          exact 
+          path='/' 
+          words={this.state.words}
+          getRandomWord={this.getRandomWord}
+          addFlashcard={this.addFlashcard}
+          allData={this.state.words}
+          />
+          <Route exact path='/my-flashcards' render={(routerProps) => <Saves {...routerProps} words={this.state.userFlashcards} getRandomWord={this.getRandomWord} addFlashcard={this.addFlashcard} allData={this.state.words} removeFlashcard={this.removeFlashcard} />} />
+          <Route exact path='/login' render={(routerProps) => <LoginPage {...routerProps} handleLogin={this.handleLogin} handleSignup={this.handleSignup} />} />
       </div>
     )
   }
 }
+
+export default  withRouter(App) 
