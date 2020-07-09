@@ -1,68 +1,82 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Phono Mandarin
 
-## Available Scripts
+Get instant feedback on your Mandarin tone pronunciation.
 
-In the project directory, you can run:
+## Table of Contents 
 
-### `yarn start`
+* [General Info](#general-info)
+* [Video](#video)
+* [Technologies](#technologies)
+* [Setup](#setup)
+* [Features](#features)
+* [Status](#status)
+* [License](#license)
+* [Contact](#contact)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## General Info
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Phono Mandarin is a full stack web app built with a React frontend and Django backend. It makes use of Mozilla's WebSpeech API to access the browser's speech recognition functionality to access the user's microphone and checks the recognized speech against a displayed flashcard. Once the app has determined correct tonal pronunctiation the flashcard's background will change colors to become green to provide instant feedback. User's have the ability to save flashcards to their own deck and may switch between practicing only those selected flashcards or the entire deck provided.
 
-### `yarn test`
+## Video 
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+[Phono Mandarin on Youtube](https://youtu.be/2d-KcMdh9ic) 
 
-### `yarn build`
+## Technologies 
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* React JS - version 6.14.5
+* Django - version 3.0.8
+* Mozilla's Web Speech API
+* SQLite3
+* HTML/CSS
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This app is stored in two different GitHub respositories, the frontend can be found [here](https://github.com/nolan-dyke/mod5_project) and the backend may be found [here](https://github.com/nolan-dyke/capstone_backend). Both should be cloned to your local machine, in seperate files. Next the React dependencies for the frontend can be installed with npm by:
+`$ npm install`
+The python dependencies for the Django backend can be installed using pip:
+`$ pip install -r requirements.txt`
 
-### `yarn eject`
+Additionally, the backend contains migrations that should be run in order to have access to its functionality. Run the following commands:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+$ python manage.py makemigrations
+$ python manage.py migrate
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The Django backend should be served on port 3000 and can be done by running the command 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`$ python manage.py runserver 3000`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The frontend may be served on any port and can be accomplished by running the command:
 
-## Learn More
+`$ npm start`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+At this point you may navigate the app in the browser. You may create a new user profile, or use the test user credentials log in: 
+```
+username: test
+password: 12345
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Features 
 
-### Code Splitting
+* Full authentication
+* Login or create new profile
+* Voice recognition
+* Responsive pronunciation verification
+* Save flashcards to a user's deck
+* Remove flashcards from a user's deck
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-### Analyzing the Bundle Size
+## Status 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+This project is finished with the option to expand flashcard decks and future deployment coming soon.
 
-### Making a Progressive Web App
+## License 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+This project is an open source project in accordance with the MIT open source initiative license.
 
-### Advanced Configuration
+## Contact
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+[GitHub](https://github.com/nolan-dyke)
+[LinkedIn](linkedin.com/in/nolan-dyke)
 
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

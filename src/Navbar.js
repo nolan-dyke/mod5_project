@@ -6,7 +6,7 @@ export default class Navbar extends Component {
         return (
         <nav>
             <button onClick={() => this.props.handleLogout()}>Log Out</button>
-            <button onClick={() => this.props.viewSaves()}>{this.props.viewFlashcards ? 'Back to Practine': 'Saved Flashcards'}</button>
+            <button onClick={() => this.props.viewSaves()}>{this.props.viewFlashcards ? 'Back to Practice': 'Saved Flashcards'}</button>
         </nav>
         )
     }
