@@ -39,7 +39,8 @@ class App extends Component {
       console.log(response)
       this.setState({
         loggedIn: true, 
-        userId: response.user.id
+        userId: response.user.id,
+        userFlashcards: response.user.flashcards
       })
     })
     .then(() => this.props.history.push('/'))
@@ -70,7 +71,23 @@ class App extends Component {
   addFlashcard = (fc) => {
     if(!this.state.userFlashcards.find(card => card === fc)){
       let cards = [...this.state.userFlashcards, fc]
+      let newCardObject = {
+        "traditional": fc.traditional,
+		    "simplified": fc.simplified,
+		    "pinyin": fc.pinyin,
+		    "definitions": fc.definitions,
+		    "user": this.state.userId
+      }
       this.setState({userFlashcards: cards})
+      fetch('http://localhost:3000/api/flashcards/', {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/JSON'
+      },
+      body: JSON.stringify(newCardObject)
+    })
+    .then(resp => resp.json())
+    .then(response => console.log(response))
     }
   }
 
